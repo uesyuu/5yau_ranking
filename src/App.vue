@@ -5,26 +5,30 @@
     <v-simple-table>
       <template>
         <thead>
-          <tr>
-            <th></th>
-            <th></th>
-            <th><v-btn elevation="2" @click="doSort('single')">sort</v-btn></th>
-            <th><v-btn elevation="2" @click="doSort('average')">sort</v-btn></th>
-          </tr>
-          <tr>
-            <th>Rank</th>
-            <th>Name</th>
-            <th>Single</th>
-            <th>Average</th>
-          </tr>
+        <tr>
+          <th></th>
+          <th></th>
+          <th>
+            <v-btn elevation="2" @click="doSort('single')">sort</v-btn>
+          </th>
+          <th>
+            <v-btn elevation="2" @click="doSort('average')">sort</v-btn>
+          </th>
+        </tr>
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th>Single</th>
+          <th>Average</th>
+        </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) of result" :key="item">
-            <td>{{ index + 1 }}</td>
-            <td>{{ item[0] }}</td>
-            <td>{{ item[1] }}</td>
-            <td>{{ item[2] }}</td>
-          </tr>
+        <tr v-for="(item, index) of result" :key="item">
+          <td>{{ index + 1 }}</td>
+          <td>{{ item[0] }}</td>
+          <td>{{ item[1] }}</td>
+          <td>{{ item[2] }}</td>
+        </tr>
         </tbody>
       </template>
     </v-simple-table>
@@ -34,7 +38,7 @@
 <script>
 export default {
   name: 'App',
-  data: function() {
+  data: function () {
     return {
       result: [],
       persons: [
@@ -54,47 +58,49 @@ export default {
       ]
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.getData();
   },
   methods: {
-    getData: function() {
-      var url = "https://www.worldcubeassociation.org/api/v0/persons?per_page=100&wca_ids=" + this.persons[0];
-      for (var i = 1; i < this.persons.length; i++) {
+    getData: function () {
+      let url = "https://www.worldcubeassociation.org/api/v0/persons?per_page=100&wca_ids=" + this.persons[0];
+      for (let i = 1; i < this.persons.length; i++) {
         url += "," + this.persons[i]
       }
       this.axios.get(url)
-        .then((response) => {
-          var data = [];
-          for (var i = 0; i < response.data.length; i++) {
-            data.push([response.data[i].person.name,
-                            this.timeToFloat(response.data[i].personal_records["555"].single.best),
-                            this.timeToFloat(response.data[i].personal_records["555"].average.best)]);
-          }
-          this.result = data;
-          this.doSort("average");
-        })
-        .catch((e) => {
-          console.log(e);
-        })
+          .then((response) => {
+            const data = [];
+            for (let i = 0; i < response.data.length; i++) {
+              data.push([response.data[i].person.name,
+                this.timeToFloat(response.data[i].personal_records["555"].single.best),
+                this.timeToFloat(response.data[i].personal_records["555"].average.best)]);
+            }
+            this.result = data;
+            this.doSort("average");
+          })
+          .catch((e) => {
+            console.log(e);
+          })
     },
-    doSort: function(sortType) {
-      if (sortType == "single") {
-        this.result.sort(function(a, b) {
+    doSort: function (sortType) {
+      if (sortType === "single") {
+        this.result.sort(function (a, b) {
           return a[1] - b[1];
         });
-      } else if (sortType == "average") {
-        this.result.sort(function(a, b) {
+      } else if (sortType === "average") {
+        this.result.sort(function (a, b) {
           return a[2] - b[2];
         });
       }
     },
-    timeToFloat: function(time) {
-      var newTime = parseInt(time) / 100;
-      if (parseInt(time) % 10 == 0) {
-        newTime += "0";
+    timeToFloat: function (time) {
+      if (parseInt(time) % 100 === 0) {
+        return parseInt(time) / 100 + ".00";
+      } else if (parseInt(time) % 10 === 0) {
+        return parseInt(time) / 100 + "0";
+      } else {
+        return parseInt(time) / 100;
       }
-      return newTime;
     }
   }
 }
