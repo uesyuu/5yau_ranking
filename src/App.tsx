@@ -22,7 +22,9 @@ const App = () => {
         "2013JOHN10", "2017CHAM09", "2021DUNA01", "2016BARO04", "2016PFEI01",
         "2016BITZ01", "2017MASL06", "2017NOKE01", "2018THOM29", "2015SAHU02",
         "2019ZHEL01", "2017MISI01", "2015MLOS01", "2013BURL01", "2018OPAC01",
-        "2013OLSZ02"
+        "2013OLSZ02", "2012PONC02", "2013NAHM01", "2015MACD03", "2015CHEA01",
+        "2015MACK06", "2017OORA01", "2017WRIG03", "2016LOPE44", "2018BUDH01",
+        "2014GUMI01"
     ]
     const URL = "https://www.worldcubeassociation.org/api/v0/persons?per_page=100&wca_ids="
 
